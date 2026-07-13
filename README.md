@@ -9,7 +9,8 @@ Audits AI agents on two axes:
    confidence, dependencies, escalation boundaries, assurance, provenance)?
 
 The Agent Self-Model is specified in **[SPEC.md](SPEC.md)**, with a machine-readable
-**[JSON Schema](schema/agent-self-model.schema.json)**.
+**[JSON Schema](schema/agent-self-model.schema.json)**. See also the
+**[roadmap](ROADMAP.md)** and the **[design decisions](docs/decisions.md)**.
 
 ## Status
 
