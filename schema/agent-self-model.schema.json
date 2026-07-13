@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://supercool83.github.io/Agent-Auditor/schema/v0.1/agent-self-model.schema.json",
+  "title": "Agent Self-Model",
+  "description": "A bounded, inspectable, honest self-description an AI agent publishes on top of its A2A Agent Card. Version 0.1. The Python validator in this repository is the reference implementation and is stricter than this schema (e.g. it rejects whitespace-only strings and performs cross-pillar consistency checks).",
+  "type": "object",
+  "required": ["identity"],
+  "properties": {
+    "selfModelVersion": { "type": "string" },
+    "identity": { "$ref": "#/$defs/identity" },
+    "capabilities": { "$ref": "#/$defs/capabilities" },
+    "permissions": { "$ref": "#/$defs/permissions" },
+    "constraints": { "$ref": "#/$defs/constraints" },
+    "dependencies": { "$ref": "#/$defs/dependencies" },
+    "escalation": { "$ref": "#/$defs/escalation" },
+    "state": { "$ref": "#/$defs/state" },
+    "confidence": { "$ref": "#/$defs/confidence" },
+    "assurance": { "$ref": "#/$defs/assurance" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "attestation": { "$ref": "#/$defs/attestation" }
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "required": ["agentId", "owner"],
+      "properties": {
+        "agentId": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string" },
+        "owner": {
+          "type": "object",
+          "required": ["name", "organization", "contact"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "organization": { "type": "string", "minLength": 1 },
+            "contact": { "type": "string", "minLength": 1 },
+            "role": { "type": "string" }
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["declared"],
+      "properties": {
+        "declared": { "type": "array", "items": { "$ref": "#/$defs/capability" } }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "required": ["skillId", "maturity"],
+      "properties": {
+        "skillId": { "type": "string", "minLength": 1 },
+        "maturity": { "enum": ["experimental", "beta", "stable", "deprecated"] },
+        "proficiency": { "enum": ["low", "medium", "high"] },
+        "tested": { "type": "boolean" },
+        "knownLimits": { "type": "array", "items": { "type": "string" } },
+        "failureModes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["authorityLevel"],
+      "properties": {
+        "authorityLevel": { "enum": ["read-only", "act-with-approval", "autonomous"] },
+        "allowedActions": { "type": "array", "items": { "type": "string" } },
+        "prohibitedActions": { "type": "array", "items": { "type": "string" } },
+        "requiresAuthentication": { "type": "boolean" },
+        "spendingLimit": {
+          "type": "object",
+          "required": ["currency", "maxPerAction"],
+          "properties": {
+            "currency": { "type": "string", "minLength": 1 },
+            "maxPerAction": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["dataSensitivity"],
+      "properties": {
+        "dataSensitivity": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "dataResidency": { "type": "string" },
+        "rateLimitPerMinute": { "type": "number", "minimum": 0 },
+        "policyRefs": { "type": "array", "items": { "type": "string" } },
+        "jurisdictions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "required": ["declared"],
+      "properties": {
+        "declared": { "type": "array", "items": { "$ref": "#/$defs/dependency" } }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["type", "name"],
+      "properties": {
+        "type": { "enum": ["model", "agent", "tool", "service"] },
+        "name": { "type": "string", "minLength": 1 },
+        "provider": { "type": "string" },
+        "critical": { "type": "boolean" }
+      }
+    },
+    "escalation": {
+      "type": "object",
+      "required": ["triggers", "target"],
+      "properties": {
+        "triggers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "target": {
+          "type": "object",
+          "required": ["type", "contact"],
+          "properties": {
+            "type": { "enum": ["human", "agent", "queue"] },
+            "contact": { "type": "string", "minLength": 1 }
+          }
+        },
+        "fallbackBehavior": { "enum": ["halt", "defer", "handoff"] }
+      }
+    },
+    "state": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["operational", "degraded", "maintenance", "offline"] },
+        "availability": {
+          "type": "object",
+          "properties": {
+            "schedule": { "type": "string" },
+            "timezone": { "type": "string" }
+          }
+        },
+        "degradationPolicy": { "enum": ["graceful", "fail-closed", "fail-open"] },
+        "lastStatusChange": { "type": "string" }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "required": ["calibration"],
+      "properties": {
+        "calibration": { "enum": ["calibrated", "uncalibrated", "unknown"] },
+        "reportsConfidence": { "type": "boolean" },
+        "evidenceProvided": { "type": "boolean" },
+        "knownBiases": { "type": "array", "items": { "type": "string" } },
+        "evaluationRefs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "assurance": {
+      "type": "object",
+      "required": ["securityTier"],
+      "properties": {
+        "securityTier": { "enum": ["none", "standard", "high", "critical"] },
+        "certifications": { "type": "array", "items": { "type": "string" } },
+        "dataClasses": { "type": "array", "items": { "type": "string" } },
+        "lastPenTest": { "type": "string" },
+        "sandboxed": { "type": "boolean" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["lastUpdated", "lifecycleStage"],
+      "properties": {
+        "createdAt": { "type": "string" },
+        "lastUpdated": { "type": "string" },
+        "modelVersion": { "type": "string" },
+        "lifecycleStage": { "enum": ["active", "maintenance", "deprecated", "retired"] },
+        "reviewBy": { "type": "string" },
+        "supersededBy": { "type": "string" }
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "required": ["assertedBy", "assertedAt", "validUntil"],
+      "properties": {
+        "assertedBy": { "type": "string", "minLength": 1 },
+        "assertedAt": { "type": "string" },
+        "validUntil": { "type": "string" },
+        "signature": {
+          "type": "object",
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": { "type": "string", "minLength": 1 },
+            "value": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "selfModelVersion": "0.1",
+  "identity": {
+    "agentId": "urn:agent:example:invoice-assistant",
+    "displayName": "Invoice Assistant",
+    "owner": {
+      "name": "Finance Automation Team",
+      "organization": "Example Corp",
+      "contact": "ai-ownership@example.com",
+      "role": "Product Owner"
+    }
+  },
+  "capabilities": {
+    "declared": [
+      {
+        "skillId": "summarize-invoice",
+        "maturity": "stable",
+        "proficiency": "high",
+        "tested": true,
+        "knownLimits": ["Invoices up to 10 MB"],
+        "failureModes": ["Struggles with low-quality handwritten scans"]
+      }
+    ]
+  },
+  "permissions": {
+    "authorityLevel": "act-with-approval",
+    "allowedActions": ["read-invoices", "post-summaries"],
+    "prohibitedActions": ["issue-payments"],
+    "requiresAuthentication": true,
+    "spendingLimit": { "currency": "USD", "maxPerAction": 0 }
+  },
+  "constraints": {
+    "dataSensitivity": "confidential",
+    "dataResidency": "EU",
+    "rateLimitPerMinute": 60,
+    "policyRefs": ["https://example.com/policy/ai-use"],
+    "jurisdictions": ["EU"]
+  },
+  "dependencies": {
+    "declared": [
+      { "type": "model", "name": "claude-opus-4-8", "provider": "Anthropic", "critical": true },
+      { "type": "service", "name": "invoice-db", "critical": true }
+    ]
+  },
+  "escalation": {
+    "triggers": ["low-confidence", "policy-violation", "explicit-user-request"],
+    "target": { "type": "human", "contact": "oncall@example.com" },
+    "fallbackBehavior": "halt"
+  },
+  "state": {
+    "status": "operational",
+    "availability": { "schedule": "24/7", "timezone": "UTC" },
+    "degradationPolicy": "graceful",
+    "lastStatusChange": "2026-07-01T00:00:00Z"
+  },
+  "confidence": {
+    "calibration": "calibrated",
+    "reportsConfidence": true,
+    "evidenceProvided": true,
+    "knownBiases": ["Optimized for English-language invoices"],
+    "evaluationRefs": ["https://example.com/evals/invoice-assistant"]
+  },
+  "assurance": {
+    "securityTier": "high",
+    "certifications": ["SOC2", "ISO27001"],
+    "dataClasses": ["PII"],
+    "lastPenTest": "2026-01-15",
+    "sandboxed": true
+  },
+  "provenance": {
+    "createdAt": "2025-06-01",
+    "lastUpdated": "2026-06-01",
+    "modelVersion": "claude-opus-4-8",
+    "lifecycleStage": "active",
+    "reviewBy": "2026-12-01"
+  },
+  "attestation": {
+    "assertedBy": "urn:org:example:ai-governance",
+    "assertedAt": "2026-06-01",
+    "validUntil": "2027-06-01",
+    "signature": { "algorithm": "RS256", "value": "eyJhbGciOiJSUzI1NiJ9..redacted" }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Broken Agent",
+  "version": "0.9",
+  "supportedInterfaces": [
+    {
+      "url": "https://agents.example.com/broken",
+      "protocolBinding": "GraphQL"
+    }
+  ],
+  "capabilities": {},
+  "defaultInputModes": ["text/plain", 42],
+  "defaultOutputModes": ["text/plain"],
+  "skills": [
+    {
+      "id": "do-stuff",
+      "name": "Do stuff"
+    }
+  ]
+}

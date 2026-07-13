@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(t['path']\\) for t in d['tree'] if any\\(k in t['path'].lower\\(\\) for k in ['.json','specification','types','spec']\\)]\")",
+      "Bash(python3 agent_auditor.py examples/valid-card.json)",
+      "Bash(echo \"\\(exit code: $?\\)\")",
+      "Bash(python3 agent_auditor.py examples/broken-card.json)"
+    ]
+  }
+}

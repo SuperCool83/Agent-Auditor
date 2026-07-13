@@ -1,0 +1,48 @@
+{
+  "selfModelVersion": "0.1",
+  "identity": {
+    "displayName": "Broken Agent",
+    "owner": {
+      "name": "Someone",
+      "contact": "call-me-maybe"
+    }
+  },
+  "capabilities": {
+    "declared": [
+      {
+        "skillId": "ghost-skill",
+        "maturity": "super-stable"
+      }
+    ]
+  },
+  "permissions": {
+    "authorityLevel": "god-mode"
+  },
+  "constraints": {
+    "dataResidency": "EU"
+  },
+  "dependencies": {
+    "declared": [
+      { "name": "mystery-tool" }
+    ]
+  },
+  "escalation": {
+    "triggers": []
+  },
+  "state": {
+    "status": "on-fire"
+  },
+  "confidence": {
+    "reportsConfidence": true
+  },
+  "assurance": {
+    "securityTier": "ultra"
+  },
+  "provenance": {
+    "lifecycleStage": "zombie"
+  },
+  "attestation": {
+    "assertedAt": "June 2026",
+    "validUntil": "2025-01-01"
+  }
+}
